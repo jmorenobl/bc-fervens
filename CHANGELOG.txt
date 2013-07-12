@@ -1,0 +1,4 @@
+kt_fervens-7.x-1.0, 2011-08-30
+------------------------------
+- Fervens for Drupal 7 completed.
+- Removed integrated Superfish dropdown, now depends on Superfish module.

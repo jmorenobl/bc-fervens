@@ -1,0 +1,26 @@
+/*
+ * Put your custom styles and style overrides in this file and rename it
+ * style-custom.css. By restricting your style changes to style-custom.css,
+ * your changes will not be overwritten when upgrading to a new version of
+ * this theme.
+ *
+ * Steps to activate style-custom.css:
+ *  1. Add your custom styles to this file
+ *  2. Rename this file to style-custom.css
+ *  3. Uncomment the line:
+ *       ; stylesheets[all][] = css/style-custom.css
+ *     to
+ *       stylesheets[all][] = css/style-custom.css
+ *  4. Clear cached data at admin/config/development/performance
+ */
+.gmap-control {
+	clear: both;
+}
+
+div.block-content > div.item-list > ul, .block-content > .item-list > ol {
+    margin: 0 0 18px 25px;
+}
+
+.form-text {
+    width: 90%;
+}
