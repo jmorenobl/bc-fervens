@@ -22,5 +22,10 @@ div.block-content > div.item-list > ul, .block-content > .item-list > ol {
 }
 
 .form-text {
-    width: 90%;
+    width: 80%;
 }
+
+.pane-content fieldset {
+    border: none;
+}
+

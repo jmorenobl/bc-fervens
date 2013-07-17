@@ -22,5 +22,5 @@ div.block-content > div.item-list > ul, .block-content > .item-list > ol {
 }
 
 .form-text {
-    witdh: 90%;
+    width: 90%;
 }
