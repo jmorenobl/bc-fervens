@@ -66,3 +66,107 @@ function kt_fervens_feed_icon($variables) {
     return l($image, $variables['url'], array('html' => TRUE, 'attributes' => array('class' => array('feed-icon'), 'title' => $text)));
   }
 }
+
+/**
+ *  implementation of theme_shoutbox_post()
+ */
+function kt_fervens_shoutbox_post($variables) {
+  /*global $user;
+
+//  print theme('user_picture', array('account' =>$user));
+
+ //convert timestamp to time ago
+  $post_time_ago = time_ago($shout->created);
+  
+  //load user image and format
+   
+   $author_picture ='';
+   $shout_author =  $user;
+
+      if(($shout_author->picture == '' ) && (variable_get('user_picture_default', '') != '')){
+      $shout_author->picture =  variable_get('user_picture_default', '');
+      }
+      $author_picture ='';
+      if($shout_author->picture != ''){
+     $author_picture = theme('user_picture', array('account' =>$user));
+     }
+   
+  return "<div class=\" $shout_classes \" title=\"$title\">
+		<div class=\"shoutbox-admin-links\">$img_links</div>
+		<div class=\"shoutbox-post-info\">"
+			.$author_picture.
+			"<span class=\"shoutbox-user-name $user_class\">$user_name</span>
+			<span class=\"shoutbox-msg-time\">" . $post_time_ago . " ".t('ago')."</span>
+		</div>
+		<div class=\"shout-message\"> $shout->shout</div>
+	</div>\n";*/
+
+  $shout = $variables['shout'];
+  $links = $variables['links'];
+
+  global $user;
+  $img_links = '';
+  // Gather moderation links
+  if ($links) {
+    foreach ($links as $link) {
+      $link_html = '<img src="' . $link['img'] . '"  width="' . $link['img_width'] . '" height="' . $link['img_height'] . '" alt="' . $link['title'] . '" class="shoutbox-imglink"/>';
+      $link_url = 'shout/' . $shout->shout_id . '/' . $link['action'];
+      $img_links = l($link_html, $link_url, array('html' => TRUE, 'query' => array('destination' => drupal_get_path_alias($_GET['q'])))) . $img_links;
+    }
+  }
+
+  // Generate user name with link
+  $user_name = shoutbox_get_user_link($shout);
+
+  // Generate the user picture
+  $author_picture = theme('user_picture', array('account' =>$user));
+
+  // Generate title attribute
+  $title = t('Posted !date at !time by !name', array('!date' => format_date($shout->created, 'custom', 'm/d/y'), '!time' => format_date($shout->created, 'custom', 'h:ia'), '!name' => $shout->nick));
+
+  // Add to the shout classes
+  $shout_classes = array();
+  $shout_classes[] = 'shoutbox-msg';
+
+  // Check for moderation
+  $approval_message = NULL;
+  if ($shout->moderate == 1) {
+    $shout_classes[] = 'shoutbox-unpublished';
+    $approval_message = '&nbsp;(' . t('This shout is waiting for approval by a moderator.') . ')';
+  }
+
+  // Check for specific user class
+  $user_classes = array();
+  $user_classes[] = 'shoutbox-user-name';
+  if ($shout->uid == $user->uid) {
+    $user_classes[] = 'shoutbox-current-user-name';
+  }
+  else if ($shout->uid == 0) {
+    $user_classes[] = 'shoutbox-anonymous-user';
+  }
+
+  // Build the post
+  $post = '';
+  $post .= '<div class="' . implode(' ', $shout_classes) . '" title="' . $title . '">';
+  $post .= '<div class="shoutbox-admin-links">' . $img_links . '</div>';
+  $post .= $author_picture;
+  $post .= '<div class="' . implode(' ', $user_classes) . '">' . $user_name . ' says:&nbsp;</div>';
+  $post .= '<div class="shoutbox-shout">' . $shout->shout . $approval_message . '</div>';
+  $post .= '<div class="shoutbox-msg-time">';
+  $format = variable_get('shoutbox_time_format', 'ago');
+  switch ($format) {
+    case 'ago':
+      $post .=  t('!interval ago', array('!interval' => format_interval(REQUEST_TIME - $shout->created)));
+      break;
+    case 'small':
+    case 'medium':
+    case 'large':
+      $post .= format_date($shout->created, $format);
+      break;
+  }
+  $post .= '</div>';
+  $post .= '</div>' . "\n";
+
+  return $post;
+}
+

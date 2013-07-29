@@ -29,3 +29,20 @@ div.block-content > div.item-list > ul, .block-content > .item-list > ol {
     border: none;
 }
 
+.user-picture {
+    float: left;
+    margin: 0px;
+    padding-right: 8px;
+}
+
+.shoutbox-user-name {
+    padding-bottom: 5px;
+}
+
+.shoutbox-msg-time {
+    color: #999;
+    font-style: italic;
+    font-size: 80%;
+    padding-left: 7px;
+    float: right;
+}
