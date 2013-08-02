@@ -170,3 +170,25 @@ function kt_fervens_shoutbox_post($variables) {
   return $post;
 }
 
+function kt_fervens_gmap($element) {
+  if (isset($element['element']['#gmap_settings'])) {
+    $offset = 0.0001;
+    $markers =& $element['element']['#gmap_settings']['markers'];
+
+    for ($outer=0; $outer < count($markers); $outer++) {
+      $cc=0;
+      $outer_place =& $markers[$outer];
+      for ($inner = $outer+1; $inner < count($markers); $inner++) {
+        $inner_place =& $markers[$inner];
+        if ($outer_place['latitude'] == $inner_place['latitude'] &&
+            $outer_place['longitude'] == $inner_place['longitude']) {
+          $cc++;
+          // nudge the location of the inner place
+          $inner_place['latitude'] += -$offset*sqrt($cc)*sin($cc*45);
+          $inner_place['longitude'] += -$offset*sqrt($cc)*cos($cc*45);
+        }
+      }
+    }
+  }
+  return theme_gmap($element);
+}
