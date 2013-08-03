@@ -46,3 +46,9 @@ div.block-content > div.item-list > ul, .block-content > .item-list > ol {
     padding-left: 7px;
     float: right;
 }
+
+.view-meeting-points caption {
+	font-size: 20px;
+	float: left;
+	margin-top: 15px;
+}
